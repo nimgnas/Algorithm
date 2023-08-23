@@ -9,6 +9,9 @@ function solution(polynomial) {
         }
         else numSum += parseInt(polynomial[i])
     }
-    if (xSum === 1) xSum = ""
-    return xSum === 0 ? `${numSum}` : numSum === 0 ? `${xSum}x` : `${xSum}x + ${numSum}` 
+    
+    const sum = []
+    if(xSum !== 0) sum.push(`${xSum === 1 ? "" : xSum}x`)
+    if(numSum !== 0) sum.push(numSum)
+    return sum.join(" + ")
 }
