@@ -1,25 +1,28 @@
-var fs = require('fs');
-var input = fs.readFileSync('/dev/stdin').toString().split('\n');
-var cases = input[0];
-var arr = [];
-var stack = [];
-var answer = '';
-for(var i=0; i<cases; i++){
-    arr[i] = i+1;
-}
-for(var j=1; j<=cases; j++){ //4
-    	var count = 1;
-        while(count <= cases && stack[stack.length-1] != input[j]){
-            stack.push(arr.shift());
-            answer += '+\n';
-            count++;
-        }
-    if(stack[stack.length-1] == input[j]){
-        stack.pop();
-        answer += '-\n';
-    }else{
-        answer = 'NO';
-        break;
+const FILE_PATH = process.platform === "linux" ? "/dev/stdin" : "input.txt";
+let fs = require("fs");
+let input = fs.readFileSync(FILE_PATH).toString().trim().split("\n");
+const n = input.shift();
+
+input = input.map((v) => Number(v));
+
+let target = 0;
+
+const stack = [];
+let answer = "";
+for (let i = 1; i <= n; i++) {
+  stack.push(i);
+  answer += "+";
+
+  if (input[target] === i) {
+    while (stack.length >= 1 && stack.at(-1) === input[target]) {
+      stack.pop();
+      answer += "-";
+      target++;
     }
+  }
 }
-console.log(answer);
+
+if (stack.length >= 1) console.log("NO");
+else {
+  console.log(answer.split("").join("\n"));
+}
