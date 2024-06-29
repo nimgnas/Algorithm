@@ -4,31 +4,40 @@ let input = fs.readFileSync(FILE_PATH).toString().trim().split("\n");
 
 let [N, M, S] = input;
 
-const createP = (n) => {
-  let result = "";
+S = [...S];
 
-  let cnt = 0;
-  let flag = true;
-  while (cnt <= n) {
-    if (flag) {
-      result += "I";
-      cnt++;
-    } else result += "O";
+for (let i = 0; i < S.length - 2; i++) {
+  const ioi = S[i] + S[i + 1] + S[i + 2];
 
-    flag = !flag;
+  if (ioi === "IOI") {
+    S[i] = "*";
+    S[i + 1] = "";
+    i++;
   }
-
-  return result;
-};
-
-const ioi = createP(N);
-let cnt = 0;
-
-let SS = S.slice(0, ioi.length);
-if (SS.endsWith(ioi)) cnt++;
-
-for (let i = ioi.length; i < +M; i++) {
-  SS += S[i];
-  if (SS.endsWith(ioi)) cnt++;
 }
+
+S = S.join("");
+
+let flag = false;
+const arr = [];
+let str = "";
+for (let i = 0; i < S.length; i++) {
+  if (S[i] === "*") {
+    flag = true;
+    str += "*";
+  } else if (flag && S[i] !== "*") {
+    flag = false;
+    arr.push(str);
+    str = "";
+  }
+}
+
+let cnt = 0;
+arr.forEach((v) => {
+  const len = v.length;
+  if (len >= +N) {
+    cnt += len - +N + 1;
+  }
+});
+
 console.log(cnt);
